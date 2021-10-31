@@ -41,9 +41,9 @@ async function run() {
 run().catch(console.dir);
 
 app.get('/', (req, res) => {
-    res.send('Travel BD Service is Running');
+    res.send('Travel BD Server Running');
 });
 
 app.listen(port, () => {
-    console.log('Server Running at Port', port)
+    console.log('Travel BD Server on Port', port)
 })
