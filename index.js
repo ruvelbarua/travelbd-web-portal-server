@@ -1,6 +1,6 @@
 const express = require('express');
 const { MongoClient } = require('mongodb');
-// const objectId = require('mongodb').objectId;
+const objectId = require('mongodb').ObjectId
 
 const cors = require('cors');
 require('dotenv').config();
@@ -28,13 +28,26 @@ async function run() {
             const services = await cursor.toArray();
             res.send(services);
         })
+
+        // GET SINGLE SERVICE
+        app.get('/services/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log('Getting Id', id);
+            const query = { _id: objectId(id) };
+            const service = await serviceCollection.findOne(query);
+            res.json(service);
+        })
+
         // POST API
-        app.post('/users', async (req, res) => {
-            const newUser = req.body;
-            const result = await usersCollection.insertOne(newUser);
-            // console.log('Get new user', req.body);
-            // console.log('add user', result);
-            res.json(result);
+        app.post('/services', async (req, res) => {
+            const service = req.body;
+            console.log('hit the post api', service)
+            // const newUser = req.body;
+            const result = await serviceCollection.insertOne(service);
+            // // console.log('Get new user', req.body);
+            // // console.log('add user', result);
+            console.log(result)
+            res.send(result);
         })
 
     } finally {
