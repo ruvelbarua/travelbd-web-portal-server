@@ -27,7 +27,7 @@ async function run() {
             const cursor = serviceCollection.find({});
             const services = await cursor.toArray();
             res.send(services);
-        })
+        });
 
         // GET SINGLE SERVICE
         app.get('/services/:id', async (req, res) => {
@@ -36,18 +36,21 @@ async function run() {
             const query = { _id: objectId(id) };
             const service = await serviceCollection.findOne(query);
             res.json(service);
-        })
+        });
 
         // POST API
         app.post('/services', async (req, res) => {
             const service = req.body;
-            console.log('hit the post api', service)
-            // const newUser = req.body;
             const result = await serviceCollection.insertOne(service);
-            // // console.log('Get new user', req.body);
-            // // console.log('add user', result);
-            console.log(result)
             res.send(result);
+        });
+
+        // DELETE API
+        app.delete('/services/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: objectId(id) };
+            const result = await serviceCollection.deleteOne(query);
+            res.json(result);
         })
 
     } finally {
